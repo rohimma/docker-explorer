@@ -5,8 +5,8 @@ build_assets:
   script:
     - yarn install
     - yarn run build
-    - ls -la build/
+    - tar -czvf build.tar.gz build/
   artifacts:
     paths:
-      - build/
+      - build.tar.gz
     expire_in: 1 week
