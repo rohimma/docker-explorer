@@ -7,32 +7,11 @@
 <script>
   import ContainerTemplate from './ContainerTemplate.vue'
 
-  const Docker = require('node-docker-api').Docker
-
-  let docker = new Docker({ socketPath: '/var/run/docker.sock' })
-
   export default {
-    name: 'container-list',
+    name: 'container-list-page',
     components: { ContainerTemplate },
     mounted () {
-      let el = this
-
-      window.setInterval(function () {
-        el.updateContianerList()
-      }, 1000)
-    },
-    methods: {
-      setContainers (containers) {
-        this.$store.commit('set_container_list', containers)
-      },
-      updateContianerList () {
-        let el = this
-
-        return docker.container.list()
-          .then((containers) => {
-            el.setContainers(containers)
-          })
-      }
+      this.$store.dispatch('updateAsync')
     },
     computed: {
       containerList () {

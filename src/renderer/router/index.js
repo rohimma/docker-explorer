@@ -7,8 +7,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'container-list',
-      component: require('@/components/ContainerList')
+      name: 'container-list-page',
+      component: require('@/components/ContainerListPage')
     },
     {
       path: '*',
