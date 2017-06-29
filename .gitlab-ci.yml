@@ -5,6 +5,7 @@ build_assets:
   script:
     - yarn install
     - yarn run build
+    - ls -la build/
   artifacts:
     paths:
       - build/
