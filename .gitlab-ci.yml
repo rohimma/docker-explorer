@@ -8,5 +8,5 @@ build_assets:
     - tar -czvf build.tar.gz build/
   artifacts:
     paths:
-      - build/docker-explorer*
+      - build/*.deb
     expire_in: 1 week
