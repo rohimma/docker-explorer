@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/docker-explorer.iml" filepath="$PROJECT_DIR$/.idea/docker-explorer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../kitematic/.idea/kitematic.iml" filepath="$PROJECT_DIR$/../kitematic/.idea/kitematic.iml" />
+    </modules>
+  </component>
+</project>
