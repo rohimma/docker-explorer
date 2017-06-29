@@ -8,5 +8,5 @@ build_assets:
     - tar -czvf build.tar.gz build/
   artifacts:
     paths:
-      - build/docker-explorer_0.0.0_amd64.deb
+      - build/docker-explorer*
     expire_in: 1 week
