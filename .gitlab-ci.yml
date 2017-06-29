@@ -3,6 +3,7 @@ image: electronuserland/electron-builder:latest
 build_assets:
   stage: build
   script:
+    - yarn install
     - yarn run build
   artifacts:
     paths:
