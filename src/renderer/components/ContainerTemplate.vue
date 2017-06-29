@@ -3,7 +3,8 @@
     <div class="panel-heading" @click="show = !show">
       {{ containerName }}
       <span class="container-state bg-success">
-        <button type="button" class="btn btn-primary btn-play" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
+        <button type="button" class="btn btn-primary btn-small" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
+        <button type="button" class="btn btn-primary btn-small" title="open bash shell" @click="openBashShell()"><i class="fa fa-external-link"></i> Bash</button>
         {{ state }}
       </span>
     </div>
@@ -16,8 +17,9 @@
         <process-list :processlist="processlist" v-if="processlist != null"></process-list>
 
         <button type="button" class="btn btn-primary" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
-        <button type="button" class="btn btn-primary" title="stop container" @click="stopContainer()"><i class="fa fa-stop"></i></button>
-        <button type="button" class="btn btn-primary" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
+        <button type="button" class="btn btn-primary" title="open bash shell" @click="openBashShell()"><i class="fa fa-external-link"></i> Bash</button>
+        <button type="button" class="btn btn-danger" title="stop container" @click="stopContainer()"><i class="fa fa-stop"></i></button>
+        <button type="button" class="btn btn-info" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
         <button type="button" class="btn btn-primary" title="test" @click="test()">test</button>
       </div>
     </transition>
@@ -54,9 +56,9 @@
         setProcessList (list) {
           this.processlist = list
         },
-        openShell () {
+        _openShell (arg = '') {
           const { exec } = require('child_process')
-          const xte = exec('/usr/bin/x-terminal-emulator -e "docker exec -it ' + this.container.id + ' /bin/bash"', {'shell': true})
+          const xte = exec('/usr/bin/x-terminal-emulator -e "docker exec -it ' + this.container.id + ' ' + arg + '"', {'shell': true})
 
           xte.stdout.on('data', (data) => {
             console.log(`stdout: ${data}`)
@@ -69,6 +71,12 @@
           xte.on('close', (code) => {
             console.log(`child process exited with code ${code}`)
           })
+        },
+        openBashShell () {
+          this._openShell('/bin/bash')
+        },
+        openShell () {
+          this._openShell()
 
           // shell.openExternal('https://github.com/kitematic/kitematic/issues/new')
         },
@@ -117,7 +125,7 @@
     border-radius: 0px;
   }
 
-  .btn-play {
+  .btn-small {
     padding: 1px 5px;
   }
 </style>
