@@ -5,8 +5,8 @@ build_assets:
   script:
     - yarn install
     - yarn run build
-    - tar -czvf build.tar.gz build/
+    - tar -czvf build.tar.gz build/docker-explorer*
   artifacts:
     paths:
-      - build/*.deb
+      - build.tar.gz
     expire_in: 1 week
