@@ -12,7 +12,7 @@
   let docker = new Docker({ socketPath: '/var/run/docker.sock' })
 
   export default {
-    name: 'landing-page',
+    name: 'container-list',
     components: { ContainerTemplate },
     mounted () {
       let el = this
@@ -21,14 +21,9 @@
         el.updateContianerList()
       }, 1000)
     },
-    data () {
-      return {
-        containerList: null
-      }
-    },
     methods: {
       setContainers (containers) {
-        this.containerList = containers
+        this.$store.commit('set_container_list', containers)
       },
       updateContianerList () {
         let el = this
@@ -37,6 +32,11 @@
           .then((containers) => {
             el.setContainers(containers)
           })
+      }
+    },
+    computed: {
+      containerList () {
+        return this.$store.state.DockerStore.containerList
       }
     }
   }

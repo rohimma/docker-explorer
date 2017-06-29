@@ -1,23 +1,24 @@
 <template>
-  <div class="container-wrapper">
-    <div id="container-title-wrapper" @click="show = !show">
+  <div class="panel panel-default">
+    <div class="panel-heading" @click="show = !show">
       {{ containerName }}
-      <span class="container-state">
+      <span class="container-state bg-success">
+        <button type="button" class="btn btn-primary btn-play" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
         {{ state }}
       </span>
     </div>
     <transition name="fade">
-      <div id="container-body" v-show="show">
+      <div class="panel-body" v-show="show">
         Image: {{ imageName }}<br />
 
         <port v-for="(port, index) in poorten" :port="port" :key="index"></port> <br />
 
         <process-list :processlist="processlist" v-if="processlist != null"></process-list>
 
-        <button @click="openShell()">open shell</button>
-        <button @click="stopContainer()">stop</button>
-        <button @click="startContainer()">start</button>
-        <button @click="test()">test</button>
+        <button type="button" class="btn btn-primary" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
+        <button type="button" class="btn btn-primary" title="stop container" @click="stopContainer()"><i class="fa fa-stop"></i></button>
+        <button type="button" class="btn btn-primary" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
+        <button type="button" class="btn btn-primary" title="test" @click="test()">test</button>
       </div>
     </transition>
   </div>
@@ -111,26 +112,12 @@
     position: absolute;
   }
 
-  #container-body {
-    box-sizing: border-box;
-    border-bottom: solid 1px #7a8491;
+  .panel {
+    margin-bottom: 5px;
+    border-radius: 0px;
   }
 
-  .container-wrapper {
-    /*border: solid 1px black;*/
-    margin: 0;
-    padding: 0;
-    min-height: 30px;
-  }
-
-  #container-title-wrapper {
-    cursor: pointer;
-    min-height: 30px;
-    padding-top: 4px;
-    border-bottom: solid 1px #7a8491;
-  }
-
-  #container-title-wrapper:hover {
-    background-color: #7a8491;
+  .btn-play {
+    padding: 1px 5px;
   }
 </style>

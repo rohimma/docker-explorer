@@ -5,6 +5,11 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+require('font-awesome/css/font-awesome.css')
+window.jQuery = require('jquery')
+require('bootstrap/dist/js/bootstrap.min')
+require('bootstrap/dist/css/bootstrap.min.css')
+
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
 Vue.config.productionTip = false

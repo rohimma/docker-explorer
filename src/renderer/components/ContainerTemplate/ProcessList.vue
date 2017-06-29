@@ -1,6 +1,6 @@
 <template>
     <div class="processlist-wrapper">
-        <table>
+        <table class="table table-striped table-bordered">
             <thead>
             <tr>
                 <th v-for="(title, index) in processlist.Titles">{{ title }}</th>

@@ -56,12 +56,19 @@
     },
     "linux": {
       "icon": "build/icons",
-      "target": ["AppImage", "deb", "tar.gz"]
+      "target": [
+        "AppImage",
+        "deb",
+        "tar.gz"
+      ]
     }
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "bootstrap": "^3.3.7",
     "electron-installer-debian": "^0.5.2",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
     "node-docker-api": "^1.1.12",
     "shell-escape": "^0.2.0",
     "vue": "^2.3.3",
