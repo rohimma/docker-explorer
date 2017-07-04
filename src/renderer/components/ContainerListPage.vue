@@ -15,7 +15,7 @@
     },
     computed: {
       containerList () {
-        return this.$store.state.DockerStore.containerList
+        return this.$store.state.ContainersStore.containerList
       }
     }
   }

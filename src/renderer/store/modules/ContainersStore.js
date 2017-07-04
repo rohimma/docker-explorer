@@ -25,7 +25,7 @@ const actions = {
     if (state.isRunning === false || force) {
       commit('set_container_list_running', true)
 
-      docker.container.list()
+      docker.container.list({all: true})
         .then((containers) => {
           commit('set_container_list', containers)
         })

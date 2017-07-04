@@ -2,10 +2,10 @@
   <div class="panel panel-default">
     <div class="panel-heading" @click="show = !show">
       {{ containerName }}
-      <span class="container-state bg-success">
+      <span class="container-state">
         <button type="button" class="btn btn-primary btn-small" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
         <button type="button" class="btn btn-primary btn-small" title="open bash shell" @click="openBashShell()"><i class="fa fa-external-link"></i> Bash</button>
-        {{ state }}
+        <span :class="stateClass">{{ state }}</span>
       </span>
     </div>
     <transition name="fade">
@@ -16,11 +16,15 @@
 
         <process-list :processlist="processlist" v-if="processlist != null"></process-list>
 
+        <log :container-log="containerLog" v-if="containerLog.length > 0"></log>
+
         <button type="button" class="btn btn-primary" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
         <button type="button" class="btn btn-primary" title="open bash shell" @click="openBashShell()"><i class="fa fa-external-link"></i> Bash</button>
         <button type="button" class="btn btn-danger" title="stop container" @click="stopContainer()"><i class="fa fa-stop"></i></button>
         <button type="button" class="btn btn-info" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
         <button type="button" class="btn btn-primary" title="test" @click="test()">test</button>
+        <button type="button" class="btn btn-primary" title="test" @click="getContainerLog()">getContainerLog</button>
+        <button type="button" class="btn btn-primary" title="test" @click="getEvents()">getEvents</button>
       </div>
     </transition>
   </div>
@@ -29,15 +33,17 @@
 <script>
     import Port from './ContainerTemplate/Port.vue'
     import ProcessList from './ContainerTemplate/ProcessList.vue'
+    import Log from './ContainerTemplate/Log.vue'
 
     export default {
       props: ['container'],
       name: 'container-template',
-      components: { Port, ProcessList },
+      components: { Port, ProcessList, Log },
       data () {
         return {
           show: false,
-          processlist: null
+          processlist: null,
+          containerLog: []
         }
       },
       methods: {
@@ -85,9 +91,59 @@
         },
         startContainer () {
           this.container.start()
+        },
+        setContainerLog (log) {
+          this.containerLog.push(log)
+        },
+        getContainerLog () {
+          let el = this
+
+          const Docker = require('node-docker-api').Docker
+
+          const docker = new Docker({ socketPath: '/var/run/docker.sock' })
+
+          docker.container.list()
+            .then((containers) => containers.filter(function (obj) { return obj.id === el.container.id })[0])
+            .then((container) => container.logs({
+              follow: true,
+              stdout: true,
+              stderr: true
+            }))
+            .then((stream) => {
+              stream.on('data', (info) => el.setContainerLog(info.toString('utf8')))
+              stream.on('error', (err) => console.log('error', err))
+            })
+            .catch((error) => console.log('stop', error))
+        },
+        getEvents () {
+          const Docker = require('node-docker-api').Docker
+
+          const docker = new Docker({ socketPath: '/var/run/docker.sock' })
+
+          const promisifyStream = (stream) => new Promise((resolve, reject) => {
+            stream.on('data', (d) => console.log(d.toString()))
+            stream.on('end', resolve)
+            stream.on('error', reject)
+          })
+
+          docker.events({
+            since: ((new Date().getTime() / 1000) - 60).toFixed(0)
+          })
+            .then((stream) => promisifyStream(stream))
+            .catch((error) => console.log(error))
         }
       },
       computed: {
+        stateClass () {
+          switch (this.state.toLowerCase()) {
+            case 'running':
+              return { 'bg-success': true }
+            case 'exited':
+              return { 'bg-warning': true }
+            default:
+              return { 'bg-danger': true }
+          }
+        },
         poorten () {
           if (this.container.data !== null) {
             return this.container.data.Ports

@@ -45,11 +45,11 @@
     name: 'docker-explorer',
     computed: {
       containerListCount () {
-        if (this.$store.state.DockerStore.containerList === null) {
+        if (this.$store.state.ContainersStore.containerList === null) {
           return '???'
         }
 
-        return this.$store.state.DockerStore.containerList.length
+        return this.$store.state.ContainersStore.containerList.length
       }
     }
   }
