@@ -3,8 +3,8 @@
     <div class="panel-heading" @click="show = !show">
       {{ containerName }}
       <span class="container-state">
-        <button type="button" class="btn btn-primary btn-small" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
-        <button type="button" class="btn btn-primary btn-small" title="open bash shell" @click="openBashShell()"><i class="fa fa-external-link"></i> Bash</button>
+        <button type="button" class="btn btn-primary btn-small" title="open shell" @click="openShell()" v-if="isRunning"><i class="fa fa-external-link"></i></button>
+        <button type="button" class="btn btn-primary btn-small" title="open bash shell" @click="openBashShell()" v-if="isRunning"><i class="fa fa-external-link"></i> Bash</button>
         <span :class="stateClass">{{ state }}</span>
       </span>
     </div>
@@ -18,10 +18,10 @@
 
         <log :container-log="containerLog" v-if="containerLog.length > 0"></log>
 
-        <button type="button" class="btn btn-primary" title="open shell" @click="openShell()"><i class="fa fa-external-link"></i></button>
-        <button type="button" class="btn btn-primary" title="open bash shell" @click="openBashShell()"><i class="fa fa-external-link"></i> Bash</button>
-        <button type="button" class="btn btn-danger" title="stop container" @click="stopContainer()"><i class="fa fa-stop"></i></button>
-        <button type="button" class="btn btn-info" title="start container" @click="startContainer()"><i class="fa fa-play"></i></button>
+        <button type="button" class="btn btn-primary" title="open shell" @click="openShell()" v-if="isRunning"><i class="fa fa-external-link"></i></button>
+        <button type="button" class="btn btn-primary" title="open bash shell" @click="openBashShell()" v-if="isRunning"><i class="fa fa-external-link"></i> Bash</button>
+        <button type="button" class="btn btn-danger" title="stop container" @click="stopContainer()" v-if="isRunning"><i class="fa fa-stop"></i></button>
+        <button type="button" class="btn btn-info" title="start container" @click="startContainer()" v-if="!isRunning"><i class="fa fa-play"></i></button>
         <button type="button" class="btn btn-primary" title="test" @click="test()">test</button>
         <button type="button" class="btn btn-primary" title="test" @click="getContainerLog()">getContainerLog</button>
         <button type="button" class="btn btn-primary" title="test" @click="getEvents()">getEvents</button>
@@ -134,6 +134,9 @@
         }
       },
       computed: {
+        isRunning () {
+          return this.state.toLowerCase() === 'running'
+        },
         stateClass () {
           switch (this.state.toLowerCase()) {
             case 'running':
