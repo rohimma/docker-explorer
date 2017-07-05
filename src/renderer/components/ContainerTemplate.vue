@@ -22,7 +22,7 @@
         <button type="button" class="btn btn-primary" title="open bash shell" @click="openBashShell()" v-if="isRunning"><i class="fa fa-external-link"></i> Bash</button>
         <button type="button" class="btn btn-danger" title="stop container" @click="stopContainer()" v-if="isRunning"><i class="fa fa-stop"></i></button>
         <button type="button" class="btn btn-info" title="start container" @click="startContainer()" v-if="!isRunning"><i class="fa fa-play"></i></button>
-        <button type="button" class="btn btn-primary" title="test" @click="test()">test</button>
+        <button type="button" class="btn btn-primary" title="test" @click="showProcessesList()">showProccessList</button>
         <button type="button" class="btn btn-primary" title="test" @click="getContainerLog()">getContainerLog</button>
       </div>
     </transition>
@@ -46,7 +46,7 @@
         }
       },
       methods: {
-        test () {
+        showProcessesList () {
           let el = this
 
           const Docker = require('node-docker-api').Docker
