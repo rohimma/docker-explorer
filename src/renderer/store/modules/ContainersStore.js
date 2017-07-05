@@ -12,7 +12,6 @@ const state = {
 
 const mutations = {
   set_container_list (state, containerList) {
-    console.log('updating list')
     state.containerList = containerList
   },
   set_container_list_running (state, isRunning) {
@@ -21,7 +20,7 @@ const mutations = {
 }
 
 const actions = {
-  updateAsync ({ commit, state, dispatch }, force = false) {
+  docker_event ({ commit, state }, force = false) {
     if (state.isRunning === false || force) {
       commit('set_container_list_running', true)
 
@@ -29,10 +28,6 @@ const actions = {
         .then((containers) => {
           commit('set_container_list', containers)
         })
-
-      setTimeout(() => {
-        dispatch('updateAsync', true)
-      }, 1000)
     }
   }
 }

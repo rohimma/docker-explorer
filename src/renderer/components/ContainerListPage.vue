@@ -10,9 +10,6 @@
   export default {
     name: 'container-list-page',
     components: { ContainerTemplate },
-    mounted () {
-      this.$store.dispatch('updateAsync')
-    },
     computed: {
       containerList () {
         return this.$store.state.ContainersStore.containerList

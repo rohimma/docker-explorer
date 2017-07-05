@@ -41,8 +41,25 @@
 </template>
 
 <script>
+  const Docker = require('node-docker-api').Docker
+  const docker = new Docker({ socketPath: '/var/run/docker.sock' })
+
   export default {
     name: 'docker-explorer',
+    mounted () {
+      this.$store.dispatch('docker_event')
+      const promisifyStream = (stream) => new Promise((resolve, reject) => {
+        stream.on('data', (d) => this.$store.dispatch('docker_event', JSON.parse(d.toString())))
+        stream.on('end', resolve)
+        stream.on('error', reject)
+      })
+
+      docker.events({
+        since: ((new Date().getTime() / 1000) - 60).toFixed(0)
+      })
+        .then((stream) => promisifyStream(stream))
+        .catch((error) => console.log(error))
+    },
     computed: {
       containerListCount () {
         if (this.$store.state.ContainersStore.containerList === null) {

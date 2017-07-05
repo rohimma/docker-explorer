@@ -24,7 +24,6 @@
         <button type="button" class="btn btn-info" title="start container" @click="startContainer()" v-if="!isRunning"><i class="fa fa-play"></i></button>
         <button type="button" class="btn btn-primary" title="test" @click="test()">test</button>
         <button type="button" class="btn btn-primary" title="test" @click="getContainerLog()">getContainerLog</button>
-        <button type="button" class="btn btn-primary" title="test" @click="getEvents()">getEvents</button>
       </div>
     </transition>
   </div>
@@ -114,23 +113,6 @@
               stream.on('error', (err) => console.log('error', err))
             })
             .catch((error) => console.log('stop', error))
-        },
-        getEvents () {
-          const Docker = require('node-docker-api').Docker
-
-          const docker = new Docker({ socketPath: '/var/run/docker.sock' })
-
-          const promisifyStream = (stream) => new Promise((resolve, reject) => {
-            stream.on('data', (d) => console.log(d.toString()))
-            stream.on('end', resolve)
-            stream.on('error', reject)
-          })
-
-          docker.events({
-            since: ((new Date().getTime() / 1000) - 60).toFixed(0)
-          })
-            .then((stream) => promisifyStream(stream))
-            .catch((error) => console.log(error))
         }
       },
       computed: {
